@@ -2,7 +2,7 @@ package com.example.TravelPlanner.controller;
 
 
 import com.example.TravelPlanner.dto.signup.SignUpDto;
-import com.example.TravelPlanner.dto.signup.ValidateUseridDto;
+import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 import com.example.TravelPlanner.service.signup.SignUpServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +28,8 @@ public class SignUpController {
     }
 
     @PostMapping("/userid-check")
-    public ValidateUseridDto checkUserid(@RequestBody ValidateUseridDto validateUseridDto){
-        return signUpService.checkUserid(validateUseridDto);
+    public ValidateMemberIdDto checkUserid(@RequestBody ValidateMemberIdDto validateMemberIdDto){
+        return signUpService.checkMemberId(validateMemberIdDto);
     }
 
 }

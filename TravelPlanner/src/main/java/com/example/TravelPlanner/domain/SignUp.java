@@ -9,20 +9,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignUp {
 
-    @Column(name="id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name="name")
-    private String name;
-
     @Id
-    @Column(name="userid")
-    private String userid;
+    @Column(name="member_id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String memberId;
+
+    @Column(name="password")
+    private String password;
 
     @Column(name="email")
     private String email;
 
-    @Column(name="password")
-    private String password;
+    @Column(name="phone")
+    private String phone;
+
+    @Column(name="name")
+    private String name;
+
+    @Column(name="gender")
+    private String gender;
+
+    @Column(name="age")
+    private int age;
 }

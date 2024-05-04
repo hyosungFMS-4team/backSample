@@ -1,5 +1,6 @@
 package com.example.TravelPlanner.dto.signup;
 
+import jakarta.persistence.Column;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -9,10 +10,12 @@ import org.antlr.v4.runtime.misc.NotNull;
 @NoArgsConstructor
 public class SignUpDto {
 
-        private Long id;
-        private String email;
-        private String name;
-        private String userid;
+        private String memberId;
         private String password;
+        private String email;
+        private String phone;
+        private String name;
+        private String gender;
+        private int age;
 
 }

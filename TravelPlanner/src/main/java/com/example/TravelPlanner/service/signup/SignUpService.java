@@ -1,11 +1,11 @@
 package com.example.TravelPlanner.service.signup;
 
 import com.example.TravelPlanner.dto.signup.SignUpDto;
-import com.example.TravelPlanner.dto.signup.ValidateUseridDto;
+import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 
 public interface SignUpService {
 
     SignUpDto join(SignUpDto signUpDto);
 
-    ValidateUseridDto checkUserid(ValidateUseridDto validateUseridDto);
+    ValidateMemberIdDto checkMemberId(ValidateMemberIdDto validateMemberIdDto);
 }

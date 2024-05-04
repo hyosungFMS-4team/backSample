@@ -30,6 +30,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.20.0'
 	//oracle
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	//implementation group: 'com.oracle.database.jdbc', name: 'ojdbc11', version: '21.5.0.0.0'

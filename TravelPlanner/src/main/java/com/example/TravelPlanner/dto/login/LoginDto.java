@@ -10,6 +10,6 @@ import org.antlr.v4.runtime.misc.NotNull;
 @NoArgsConstructor
 public class LoginDto { //로그인 데이터 전송
     @NotNull
-    private String userid;
+    private String memberId;
     private String password;
 }
