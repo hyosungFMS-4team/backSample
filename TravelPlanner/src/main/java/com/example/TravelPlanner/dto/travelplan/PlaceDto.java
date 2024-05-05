@@ -8,6 +8,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TravelPlanDto {
+public class PlaceDto {
     private Long placeId;
 }

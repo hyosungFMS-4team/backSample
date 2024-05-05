@@ -6,11 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
-public interface MemberWishPlaceRepository extends JpaRepository<MemberWishPlace, String> {
-    List<MemberWishPlace> findAllByMemberId(String memberId);
+public interface MemberWishPlaceRepository extends JpaRepository<MemberWishPlace, Long> {
+    List<MemberWishPlace> findAllByMemberMemberId(String memberId);
+    boolean existsByMember_MemberIdAndPlace_PlaceId(String memberId, Long placeId);
+    void deleteByMemberMemberIdAndPlacePlaceId(String memberId, Long placeId);
 
-    boolean existsByMemberIdAndPlaceId(String memberId, Long placeId);
 
-    void deleteByMemberIdAndPlaceId(String memberId, Long placeId);
+    boolean existsByMemberMemberIdAndPlacePlaceId(String memberId, Long placeId);
+
 }

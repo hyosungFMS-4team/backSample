@@ -1,7 +1,7 @@
-package com.example.TravelPlanner.dto.myplan;
+package com.example.TravelPlanner.dto.wishPlace;
 
 import com.example.TravelPlanner.dto.User.MemberDto;
-import com.example.TravelPlanner.dto.travelplan.TravelPlanDto;
+import com.example.TravelPlanner.dto.travelplan.PlaceDto;
 import lombok.*;
 
 @Getter
@@ -11,5 +11,5 @@ import lombok.*;
 @NoArgsConstructor
 public class AddWishPlaceRequest {
     private MemberDto memberDto;
-    private TravelPlanDto travelPlanDto;
+    private PlaceDto placeDto;
 }

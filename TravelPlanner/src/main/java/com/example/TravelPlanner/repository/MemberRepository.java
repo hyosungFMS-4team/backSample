@@ -12,7 +12,8 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT u FROM Member u WHERE u.memberId = :member_id")
-    Optional<Member> findByMemberId(@Param("member_id") String userid);
+    Optional<Member> findByMemberId(@Param("member_id") String memberId);
 
     boolean existsByMemberId(String memberId);
+
 }

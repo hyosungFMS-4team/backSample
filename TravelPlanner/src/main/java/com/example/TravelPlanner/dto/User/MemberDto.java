@@ -9,7 +9,11 @@ import org.antlr.v4.runtime.misc.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDto {
-    @NotNull
     private String memberId;
+    private String password;
+    private String email;
+    private String phone;
+    private String name;
+    private String gender;
+    private int age;
 }
-
