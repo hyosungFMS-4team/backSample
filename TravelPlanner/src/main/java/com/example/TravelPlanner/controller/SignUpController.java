@@ -21,13 +21,27 @@ public class SignUpController {
         this.signUpService = signUpService;
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<SignUpDto> signUp(@RequestBody SignUpDto signUpDto) {
-        SignUpDto registeredUser = signUpService.join(signUpDto);
-        return ResponseEntity.ok(registeredUser);
+    //나왜 여기 /member 했지 --> 생각 안나면 없애자(security도 고쳐야됌)
+//    @PostMapping("/member")
+//    public ResponseEntity<SignUpDto> signUp(@RequestBody SignUpDto signUpDto) {
+//        SignUpDto registeredUser = signUpService.signup(signUpDto);
+//        return ResponseEntity.ok(registeredUser);
+//    }
+
+    @PostMapping("/member")
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+        SignUpDto registeredUser = signUpService.signup(signUpDto);
+        if (registeredUser != null) {
+            return ResponseEntity.ok(registeredUser);
+        } else {
+            return ResponseEntity.badRequest().body("중복된 회원 아이디입니다.");
+        }
     }
 
-    @PostMapping("/userid-check")
+
+
+    //유저 아이디 중복체크
+    @PostMapping("/memberid-check")
     public ValidateMemberIdDto checkUserid(@RequestBody ValidateMemberIdDto validateMemberIdDto){
         return signUpService.checkMemberId(validateMemberIdDto);
     }

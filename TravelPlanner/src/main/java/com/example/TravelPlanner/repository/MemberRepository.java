@@ -11,9 +11,9 @@ import java.util.Optional;
 // = DB와 통신이라고 생각
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    @Query("SELECT u FROM Member u WHERE u.memberId = :member_id")
-    Optional<Member> findByMemberId(@Param("member_id") String memberId);
-
+    //@Query("SELECT u FROM Member u WHERE u.memberId = :member_id")
+    Optional<Member> findByMemberId(String memberId);
+    //Optional<Member> findByMemberId(@Param("member_id") String memberId);
     boolean existsByMemberId(String memberId);
 
 }

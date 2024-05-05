@@ -1,10 +1,7 @@
 package com.example.TravelPlanner.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 //CREATE TABLE member (--로그인 할 수 있는 member 테이블
 //        member_id   VARCHAR2(50)    PRIMARY KEY,
@@ -20,12 +17,13 @@ import lombok.Setter;
 @Table(name = "member")
 @Getter
 @Setter
-@NoArgsConstructor
+//클래스의 특정 멤버나 메소드가 같은 패키지 내의 다른 클래스나 해당 클래스를 상속한 클래스에서만 접근 가능하고, 외부 패키지의 클래스에서는 직접적인 접근이 제한
+@NoArgsConstructor//(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member {
 
     @Id
-    @Column(name="member_id")
+    @Column(name="member_id", unique = true)
     private String memberId;
 
     @Column(name="password")

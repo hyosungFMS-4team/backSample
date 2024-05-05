@@ -5,7 +5,7 @@ import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 
 public interface SignUpService {
 
-    SignUpDto join(SignUpDto signUpDto);
+    SignUpDto signup(SignUpDto signUpDto);
 
     ValidateMemberIdDto checkMemberId(ValidateMemberIdDto validateMemberIdDto);
 }

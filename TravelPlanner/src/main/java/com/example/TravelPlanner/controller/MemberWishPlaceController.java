@@ -36,7 +36,7 @@ public class MemberWishPlaceController {
         }
     }
 
-    @GetMapping("/list")
+    @GetMapping("/view")
     public ResponseEntity<List<MemberWishPlaceDto>> getWishList(@RequestParam String memberId) {
         List<MemberWishPlaceDto> wishList = memberWishPlaceService.getWishList(memberId);
         if (wishList.isEmpty()) {

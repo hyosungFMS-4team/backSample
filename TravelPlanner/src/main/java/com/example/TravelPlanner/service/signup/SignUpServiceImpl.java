@@ -5,26 +5,42 @@ import com.example.TravelPlanner.dto.signup.SignUpDto;
 import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 import com.example.TravelPlanner.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
     private final MemberRepository memberRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public SignUpServiceImpl(MemberRepository memberRepository) {
+    public SignUpServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
-    public SignUpDto join(SignUpDto signUpDto) {
+    public SignUpDto signup(SignUpDto signUpDto) {
+        // 회원 아이디의 중복 여부를 확인
+        boolean exists = memberRepository.existsByMemberId(signUpDto.getMemberId());
+
+        // 중복된 아이디가 존재하는 경우
+        if (exists) {
+            System.out.println("중복된 회원 아이디입니다: " + signUpDto.getMemberId());
+            return null;
+        }
         // DTO를 Entity로 변환하여 저장
         Member member = new Member();
         member.setMemberId(signUpDto.getMemberId());
-        member.setPassword(signUpDto.getPassword());
+        // 비밀번호 해싱하여 저장
+        String hashedPassword = bCryptPasswordEncoder.encode(signUpDto.getPassword());
+        member.setPassword(hashedPassword);
+        //member.setPassword(signUpDto.getPassword());
+
         member.setEmail(signUpDto.getEmail());
-        member.setName(signUpDto.getPassword());
+        member.setName(signUpDto.getName());
         member.setGender(signUpDto.getGender());
         member.setPhone(signUpDto.getPhone());
         member.setAge(signUpDto.getAge());
