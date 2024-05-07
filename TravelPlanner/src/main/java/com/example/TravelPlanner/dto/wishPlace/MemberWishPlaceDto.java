@@ -12,4 +12,5 @@ import lombok.*;
 public class MemberWishPlaceDto {
     private String memberId;
     private Long placeId;
+    //private Place place;
 }

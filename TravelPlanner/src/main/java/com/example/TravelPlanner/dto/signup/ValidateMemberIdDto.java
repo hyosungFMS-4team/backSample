@@ -10,4 +10,9 @@ import lombok.Setter;
 public class ValidateMemberIdDto {
     private String memberId;
     private boolean exists;
+
+    public ValidateMemberIdDto(String memberId, boolean exists) {
+        this.memberId = memberId;
+        this.exists = exists;
+    }
 }

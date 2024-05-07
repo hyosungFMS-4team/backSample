@@ -1,6 +1,7 @@
 package com.example.TravelPlanner.controller;
 
 
+import com.example.TravelPlanner.dto.signup.MemberIdDto;
 import com.example.TravelPlanner.dto.signup.SignUpDto;
 import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 import com.example.TravelPlanner.service.signup.SignUpServiceImpl;
@@ -30,9 +31,17 @@ public class SignUpController {
 
     @PostMapping("/member")
     public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
-        SignUpDto registeredUser = signUpService.signup(signUpDto);
-        if (registeredUser != null) {
-            return ResponseEntity.ok(registeredUser);
+
+        SignUpDto registeredMember = signUpService.signup(signUpDto);
+//        System.out.println(signUpDto.getMemberId());
+//        System.out.println(signUpDto.getPassword());
+//        System.out.println(signUpDto.getName());
+//        System.out.println(signUpDto.getGender());
+//        System.out.println(signUpDto.getEmail());
+//        System.out.println(signUpDto.getAge());
+//        System.out.println(signUpDto.getPhone());
+        if (registeredMember != null) {
+            return ResponseEntity.ok(registeredMember);
         } else {
             return ResponseEntity.badRequest().body("중복된 회원 아이디입니다.");
         }
@@ -41,9 +50,28 @@ public class SignUpController {
 
 
     //유저 아이디 중복체크
+//    @PostMapping("/memberid-check")
+//    public ValidateMemberIdDto checkMemberId(@RequestBody MemberIdDto memberIdDto){
+//        String memberId = memberIdDto.getMemberId();
+//        boolean exists = signUpService.checkMemberIdExists(memberId);
+//        System.out.println(memberId);
+//        System.out.println(memberId + " false면 사용가능, true면 중복 : " + exists);
+//        return new ValidateMemberIdDto(memberId, exists);
+//        boolean exists = signUpService.checkMemberIdExists(memberId);
+//        System.out.println(memberId);
+//        System.out.println(memberId + " false면 사용가능, true면 중복 : " +  exists);
+//        return new ValidateMemberIdDto(memberId, exists);
+//    }
+
     @PostMapping("/memberid-check")
     public ValidateMemberIdDto checkUserid(@RequestBody ValidateMemberIdDto validateMemberIdDto){
-        return signUpService.checkMemberId(validateMemberIdDto);
+        String memberId = validateMemberIdDto.getMemberId();
+        System.out.println(validateMemberIdDto);
+        boolean exists = signUpService.checkMemberId(memberId);
+        System.out.println(memberId + " false면 사용가능, true면 중복 : " + exists);
+        return new ValidateMemberIdDto(memberId, exists);
+
+        //return signUpService.checkMemberId(validateMemberIdDto);
     }
 
 }
