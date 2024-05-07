@@ -1,8 +1,6 @@
 package com.example.TravelPlanner.dto.signup;
 
-import jakarta.persistence.Column;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Data
 @Builder

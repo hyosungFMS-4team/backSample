@@ -1,10 +1,8 @@
 package com.example.TravelPlanner.controller;
 
 import com.example.TravelPlanner.dto.board.BoardDto;
-import com.example.TravelPlanner.repository.BoardRepository;
 import com.example.TravelPlanner.service.board.SearchPlanServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

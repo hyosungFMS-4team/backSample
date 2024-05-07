@@ -3,7 +3,6 @@ package com.example.TravelPlanner.service.board;
 import com.example.TravelPlanner.domain.Board;
 import com.example.TravelPlanner.dto.board.BoardDto;
 import com.example.TravelPlanner.repository.BoardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

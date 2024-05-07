@@ -1,7 +1,5 @@
 package com.example.TravelPlanner.service.memberwishplace;
 
-
-import com.example.TravelPlanner.dto.wishPlace.AddWishPlaceRequest;
 import com.example.TravelPlanner.dto.wishPlace.MemberWishPlaceDto;
 
 import java.util.List;
