@@ -3,6 +3,7 @@ package com.example.TravelPlanner.service.memberwishplace;
 import com.example.TravelPlanner.domain.Member;
 import com.example.TravelPlanner.domain.MemberWishPlace;
 import com.example.TravelPlanner.domain.Place;
+import com.example.TravelPlanner.dto.travelplan.PlaceDto;
 import com.example.TravelPlanner.dto.wishPlace.MemberWishPlaceDto;
 import com.example.TravelPlanner.repository.MemberRepository;
 import com.example.TravelPlanner.repository.MemberWishPlaceRepository;
@@ -45,7 +46,21 @@ public class MemberWishPlaceServiceImpl implements MemberWishPlaceService {
     public List<MemberWishPlaceDto> getWishList(String memberId) {
         List<MemberWishPlace> userWishPlaces = memberWishPlaceRepository.findAllByMemberMemberId(memberId);
         return userWishPlaces.stream()
-                .map(w -> new MemberWishPlaceDto(w.getMember().getMemberId(), w.getPlace().getPlaceId()))
+                .map(w -> {
+                    Place place = w.getPlace();
+                    return MemberWishPlaceDto.builder()
+                            .memberId(w.getMember().getMemberId())
+                            .place(PlaceDto.builder()
+                                    .placeId(place.getPlaceId()) // Place의 placeId를 가져와서 설정
+                                    .placeName(place.getPlaceName())
+                                    .placeCategory(place.getPlaceCategory())
+                                    .lat(place.getLat())
+                                    .lng(place.getLng())
+                                    .placeImagePath(place.getPlaceImagePath())
+                                    // 기타 필요한 정보 추가
+                                    .build())
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

@@ -40,7 +40,7 @@ public class MemberWishPlaceController {
     public ResponseEntity<List<MemberWishPlaceDto>> getWishList(@RequestParam String memberId) {
         List<MemberWishPlaceDto> wishList = memberWishPlaceService.getWishList(memberId);
         if (wishList.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().body(null);
         } else {
             return ResponseEntity.ok(wishList);
         }

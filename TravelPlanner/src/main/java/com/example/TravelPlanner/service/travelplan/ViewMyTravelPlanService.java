@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ViewMyTravelPlanService {
-    Optional<List<ViewMyTravelPlanDto>> findAllByMemberId(String memberId);
+    Optional<List<ViewMyTravelPlanDto>> getTravelPlansByMemberId(String memberId);
 }

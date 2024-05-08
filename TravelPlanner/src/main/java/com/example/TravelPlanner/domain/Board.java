@@ -35,6 +35,7 @@ public class Board {
     private String memberId;
 
     @Column(name="travelplan_id")
-    private String travelplanId;
+    private String travelPlanId;
+
 
 }

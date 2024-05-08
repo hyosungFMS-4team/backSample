@@ -21,13 +21,13 @@ public class TravelPlan {
     @Id
     @Column(name="travelplan_id")
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String travelplanId;
+    private String travelPlanId;
 
     @Column(name="travelplan_title")
-    private String travelplanTitle;
+    private String travelPlanTitle;
 
     @Column(name="travelplan_content")
-    private String travelplanContent;
+    private String travelPlanContent;
 
     @Column(name="travel_started_at")
     private Date travelStartedAt;

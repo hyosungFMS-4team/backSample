@@ -1,5 +1,6 @@
 package com.example.TravelPlanner.dto.travelplan;
 
+import com.example.TravelPlanner.domain.TravelPlan;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ViewMyTravelPlanDto {
-    private String travelplanId;
-    private String travelplanTitle;
-    private String travelplanContent;
-    private Date travelStartedAt;
-    private Date travelEndedAt;
-    private int isPublic;
+    private TravelPlanDto travelPlan;
     private String memberId;
 }

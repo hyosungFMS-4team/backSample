@@ -2,6 +2,7 @@ package com.example.TravelPlanner.controller;
 
 import com.example.TravelPlanner.dto.board.BoardDto;
 import com.example.TravelPlanner.service.board.SearchPlanServiceImpl;
+import com.example.TravelPlanner.service.board.ViewAllBoardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +15,20 @@ import java.util.List;
 public class BoardController {
 
     private final SearchPlanServiceImpl searchPlanService;
+    private final ViewAllBoardServiceImpl viewAllBoardService;
 
     @Autowired
-    public BoardController(SearchPlanServiceImpl searchPlanService) {
+    public BoardController(SearchPlanServiceImpl searchPlanService, ViewAllBoardServiceImpl viewAllBoardService) {
         this.searchPlanService = searchPlanService;
+        this.viewAllBoardService = viewAllBoardService;
     }
+
+    @GetMapping("/allboard")
+    public ResponseEntity<List<BoardDto>> getAllBoards() {
+        List<BoardDto> boards = viewAllBoardService.getAllBoards();
+        return ResponseEntity.ok(boards);
+    }
+
 
     @GetMapping("/search/{input}")
     public ResponseEntity<List<BoardDto>> searchPlans(@PathVariable("input") String searchTerm) {

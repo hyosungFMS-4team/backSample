@@ -2,6 +2,7 @@ package com.example.TravelPlanner.dto.wishPlace;
 
 import com.example.TravelPlanner.domain.Member;
 import com.example.TravelPlanner.domain.Place;
+import com.example.TravelPlanner.dto.travelplan.PlaceDto;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,5 @@ import lombok.*;
 @NoArgsConstructor
 public class MemberWishPlaceDto {
     private String memberId;
-    private Long placeId;
-    //private Place place;
+    private PlaceDto place;
 }

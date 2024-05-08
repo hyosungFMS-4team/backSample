@@ -21,10 +21,10 @@ public class TravelPlanController {
 
     @GetMapping("/member/travelplans")
     public ResponseEntity<Optional<List<ViewMyTravelPlanDto>>> findAllByMemberId(@RequestParam String memberId) {
-        Optional<List<ViewMyTravelPlanDto>> memberTravelPlanDtos = viewMyTravelPlanService.findAllByMemberId(memberId);
+        Optional<List<ViewMyTravelPlanDto>> memberTravelPlanDtos = viewMyTravelPlanService.getTravelPlansByMemberId(memberId);
         if (memberTravelPlanDtos.isEmpty()) {
             System.out.println("No travel plans found");
-            return ResponseEntity.ok().body(null);
+            return ResponseEntity.notFound().build();
         } else {
             System.out.println("Travel plans found");
             return ResponseEntity.ok(memberTravelPlanDtos);
