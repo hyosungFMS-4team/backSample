@@ -15,7 +15,6 @@ public class SignUpServiceImpl implements SignUpService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     @Autowired
     public SignUpServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
@@ -50,6 +49,7 @@ public class SignUpServiceImpl implements SignUpService {
         member.setAge(signUpDto.getAge());
         //System.out.println("회원가입 아이디 : " + member.getMemberId());
         memberRepository.save(member);
+
 
         // 로그 확인
         System.out.println("회원가입 완료: " + member);

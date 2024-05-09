@@ -17,31 +17,31 @@
         <div onclick="closeModal()" class="closeBtn">X</div>
         <div class="container" id="container">
           <div class="form-container sign-up-container">
-            <form action="/signup/member" method="post">
+            <form action="/signup/member" method="post" onsubmit="return false;">
               <h1>회원가입</h1>
               <input type="text" placeholder="아이디" id="id" autofocus />
               <label id="label1"></label>
-              <input type="email" placeholder="이메일" />
+              <input type="email" placeholder="이메일" id="email"/>
               <input type="password" placeholder="비밀번호" id="password" />
               <label id="label2"></label>
 
               <input type="password" placeholder="비밀번호 확인" id="passwordChk" onchange="checkPassword()" />
               <label id="label3"></label>
 
-              <input type="text" placeholder="이름" />
-              <input type="text" placeholder="전화번호" />
-              <input type="text" placeholder="성별" />
-              <input type="text" placeholder="나이" />
-              <button class="modalBtn submitBtn">회원가입</button>
+              <input type="text" placeholder="이름" id="name"/>
+              <input type="text" placeholder="전화번호" id="phoneNumber" />
+              <input type="text" placeholder="성별" id="gender"/>
+              <input type="text" placeholder="나이" id="age" />
+              <button class="modalBtn submitBtn" id="signUpBtn">회원가입</button>
             </form>
           </div>
           <div class="form-container sign-in-container">
-            <form action="/login" method="post">
+            <form action="/login" method="post" onsubmit="return false">
               <h1>로그인</h1>
-              <input type="text" placeholder="아이디" />
-              <input type="password" placeholder="비밀번호" />
+              <input type="text" placeholder="아이디" id="loginId"/>
+              <input type="password" placeholder="비밀번호" id="loginPassword"/>
               <a href="#">비밀번호를 잊어버렸나요?</a>
-              <button class="modalBtn">로그인</button>
+              <button id="loginBtn" class="modalBtn">로그인</button>
             </form>
           </div>
           <div class="overlay-container">

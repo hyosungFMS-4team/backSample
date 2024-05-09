@@ -31,7 +31,7 @@ public class SignUpController {
 
     @PostMapping("/member")
     public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
-
+        System.out.println(signUpDto.toString());
         SignUpDto registeredMember = signUpService.signup(signUpDto);
 //        System.out.println(signUpDto.getMemberId());
 //        System.out.println(signUpDto.getPassword());
@@ -41,7 +41,7 @@ public class SignUpController {
 //        System.out.println(signUpDto.getAge());
 //        System.out.println(signUpDto.getPhone());
         if (registeredMember != null) {
-            return ResponseEntity.ok(registeredMember);
+            return ResponseEntity.ok("ok");
         } else {
             return ResponseEntity.badRequest().body("중복된 회원 아이디입니다.");
         }
