@@ -67,25 +67,14 @@ signInButton.addEventListener('click', () => {
   container.classList.remove('right-panel-active');
 });
 
-function getFormData() {
-  return {
-    memberId: document.querySelector('#id').value,
-    password: document.getElementById('password').value,
-    email: document.getElementById('email').value,
-    phone: document.getElementById('phoneNumber').value,
-    name: document.getElementById('name').value,
-    gender: document.getElementById('gender').value,
-    age: document.getElementById('age').value,
-  };
-}
-
 document.addEventListener('DOMContentLoaded', function () {
   splide.mount(window.splide.Extensions);
   splide2.mount(window.splide.Extensions);
 
-  const idInput = document.getElementById('id');
+  let idInput = document.getElementById('id');
   idInput.addEventListener('focusout', function () {
     let id = idInput.value;
+
     if (id === '' || id.length === 0) {
       document.getElementById('label1').style.color = 'red';
       document.getElementById('label1').textContent = '공백은 ID로 사용할 수 없습니다.';
@@ -97,78 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ memberId: id }), // memberId 값을 인코딩하여 전달
+      body: 'id=' + encodeURIComponent(id),
     })
-        .then(response => {
-          console.log(response);
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Network response was not ok.');
-          }
-        })
-        .then(result => {
-          if (result === true) {
-            document.getElementById('label1').style.color = 'black';
-            document.getElementById('label1').textContent = '사용 가능한 ID 입니다.';
-          } else {
-            document.getElementById('label1').style.color = 'red';
-            document.getElementById('label1').textContent = '사용 불가능한 ID 입니다.';
-          }
-        })
-        .catch(error => {
-          console.error('There was a problem with the fetch operation:', error);
-        });
-  });
-  let signUpBtn = document.querySelector('#signUpBtn');
-  // let formData = getFormData(); // 폼 데이터를 가져옵니다.
-  signUpBtn.addEventListener('click', function () {
-    let jsonFormData = getFormData(); // JSON 문자열로 변환합니다.
-    console.log(jsonFormData)
-    // 서버로 전송합니다. 예를 들어 fetch를 사용할 수 있습니다.
-    fetch('/signup/member', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(jsonFormData),
-    })
-        .then(response => {
-          if (response.ok) {
-            console.log(response)
-            // 성공적으로 요청이 처리된 경우에 대한 처리를 추가할 수 있습니다.
-            // window.location.href = "https://localhost:8080";
-          } else {
-            // 오류 응답에 대한 처리를 추가할 수 있습니다.
-            // window.location.href = "https://localhost:8080";
-
-            console.error('회원가입 실패');
-            console.log(response)
-          }
-        })
-        .catch(error => {
-          console.error('네트워크 오류:', error);
-        });
-  });
-  // 폼 요소들의 값을 가져와서 JSON 객체로 만듭니다.
-});
-
-const login = document.querySelector('#loginBtn');
-login.addEventListener('click', function () {
-  let id = document.querySelector("#loginId");
-  let password = document.querySelector("#loginPassword");
-  fetch('/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ memberId: id.value,
-    password : password.value}), // memberId 값을 인코딩하여 전달
-  })
       .then(response => {
-        console.log(response);
         if (response.ok) {
-          return response.text();
+          return response.json();
         } else {
           throw new Error('Network response was not ok.');
         }
@@ -180,13 +102,14 @@ login.addEventListener('click', function () {
         } else {
           document.getElementById('label1').style.color = 'red';
           document.getElementById('label1').textContent = '사용 불가능한 ID 입니다.';
+          idInput.value = '';
         }
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);
       });
+  });
 });
-
 
 const checkPassword = () => {
   let password = document.getElementById('password');
