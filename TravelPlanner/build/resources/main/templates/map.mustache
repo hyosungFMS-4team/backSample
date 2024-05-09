@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script defer src="map.js"></script>
+  </head>
+  <body>
+    <div class="main_map">
+      <div class="map_wrap">
+        <div id="map" style="width: 100%; height: 100%"></div>
+
+        <!-- overlay -->
+        <div id="menu_wrap" class="bg_white">
+          <div class="option">
+            <div>
+              <form id="search_form">
+                <div class="search_bar_area">
+                  <div class="search_wrapper">
+                    <input class="search_bar" type="text" value="해운대" id="keyword" size="15" />
+                    <img class="search_img" style="width: 15px; height: 15px" src="../static/images/magnifier.png" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div style="margin: 15px 0px">
+            <p class="search_result" style="font-size: medium">'해운대'의 검색결과(24)</p>
+          </div>
+
+          <hr />
+          <ul id="placesList"></ul>
+          <div id="pagination"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8ac7e2077f27a4c6f9b51ee256d5dd18&libraries=services"></script>
+  </body>
+</html>

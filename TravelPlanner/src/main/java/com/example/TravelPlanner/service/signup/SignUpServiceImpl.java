@@ -6,6 +6,7 @@ import com.example.TravelPlanner.dto.signup.ValidateMemberIdDto;
 import com.example.TravelPlanner.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -13,17 +14,17 @@ import org.springframework.stereotype.Service;
 public class SignUpServiceImpl implements SignUpService {
 
     private final MemberRepository memberRepository;
-    //private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-//    @Autowired
-//    public SignUpServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-//        this.memberRepository = memberRepository;
-//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-//    }
     @Autowired
-    public SignUpServiceImpl(MemberRepository memberRepository) {
+    public SignUpServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+//    @Autowired
+//    public SignUpServiceImpl(MemberRepository memberRepository) {
+//        this.memberRepository = memberRepository;
+//    }
 
     @Override
     public SignUpDto signup(SignUpDto signUpDto) {
@@ -39,9 +40,9 @@ public class SignUpServiceImpl implements SignUpService {
         Member member = new Member();
         member.setMemberId(signUpDto.getMemberId());
         // 비밀번호 해싱하여 저장
-//        String hashedPassword = bCryptPasswordEncoder.encode(signUpDto.getPassword());
-//        member.setPassword(hashedPassword);
-        member.setPassword(signUpDto.getPassword());
+        String hashedPassword = bCryptPasswordEncoder.encode(signUpDto.getPassword());
+        member.setPassword(hashedPassword);
+//        member.setPassword(signUpDto.getPassword());
         member.setEmail(signUpDto.getEmail());
         member.setName(signUpDto.getName());
         member.setGender(signUpDto.getGender());
