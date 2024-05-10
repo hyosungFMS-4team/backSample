@@ -13,4 +13,20 @@ public class MainController {
     public String main(Model model) {
         return "main";
     }
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        return "main_dashboard";
+    }
+    @GetMapping("/map")
+    public String findPlace(Model model) {
+        return "map";
+    }
+    @GetMapping("/favourites")
+    public String favourites(Model model) {
+        return "favourites";
+    }
+    @GetMapping("/calendar")
+    public String calendar(Model model) {
+        return "calendar";
+    }
 }

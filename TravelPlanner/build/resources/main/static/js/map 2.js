@@ -22,6 +22,7 @@ document.getElementById('search_form').onsubmit = () => searchPlaces();
 
 // 키워드 검색을 요청하는 함수입니다
 function searchPlaces() {
+  console.log('searchplaces');
   let keyword = document.getElementById('keyword').value;
 
   if (!keyword.replace(/^\s+|\s+$/g, '')) {
@@ -41,7 +42,6 @@ function placesSearchCB(data, status, pagination) {
     // 검색 목록과 마커를 표출합니다
     displayPlaces(data);
     displaySearchResult(data);
-    getImages(data);
     // 페이지 번호를 표출합니다
     displayPagination(pagination);
   } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -118,8 +118,8 @@ function displayPlaces(places) {
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
   let el = document.createElement('li'),
-    // itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' + '<div class="info">' + '   <h5>' + places.place_name + '</h5>';
-    itemStr = '<img class="thumbnail">';
+    itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' + '<div class="info">' + '   <h5>' + places.place_name + '</h5>';
+
   if (places.road_address_name) {
     itemStr += '    <span>' + places.road_address_name + '</span>' + '   <span class="jibun gray">' + places.address_name + '</span>';
   } else {
@@ -256,29 +256,4 @@ function removeAllChildNods(el) {
   while (el.hasChildNodes()) {
     el.removeChild(el.lastChild);
   }
-}
-
-async function getImages(places) {
-    for (const x of places) {
-      const response = await fetch('/crawl', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: x.place_url,
-      }).then(response=>{
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw new Error('Network response was not ok.');
-        }
-      }).then(res=>{
-        const thumbnail = document.querySelectorAll(".thumbnail")
-        // thumbnail[]
-        console.log(res)
-      }).catch(error=>{
-        console.error('There was a problem with the fetch operation:', error);
-      })
-    }
-
 }

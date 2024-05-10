@@ -1,64 +1,78 @@
 package com.example.TravelPlanner.controller;
+
 import org.openqa.selenium.By;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class CrawlController {
     private WebDriver driver;
+    List<WebElement> elements = new ArrayList<>();
 
-    private static final String url = "https://place.map.kakao.com/279490770";
+    @PostMapping("/crawl")
+    public String process(@RequestBody String url) {
+        String imgSrc = "";
+        long startTime = System.currentTimeMillis(); // 시작 시간 기록
+//        driver = new HtmlUnitDriver();
+//        HtmlUnitOptions options = new HtmlUnitOptions(driver);
 
-    @GetMapping("/test")
-    public void process() {
-//        System.setProperty("webdriver.chrome.driver", "/Users/gijeong-gim/Desktop/hyosungedu/web/backend/Spring/crawl/chromedriver");
-        //크롬 드라이버 셋팅 (드라이버 설치한 경로 입력)
-
-        driver = new ChromeDriver();
-        //브라우저 선택
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-popup-blocking");       //팝업안띄움
-        options.addArguments("headless");                       //브라우저 안띄움
-        options.addArguments("--disable-gpu");			//gpu 비활성화
-        options.addArguments("--blink-settings=imagesEnabled=false"); //이미지 다운 안받음
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--blink-settings=imagesEnabled=false");
+        options.addArguments("--disable-extensions"); // 확장 프로그램 비활성화
+        options.addArguments("--no-sandbox"); // sandbox 모드 비활성화
+        options.addArguments("--disable-dev-shm-usage"); // /dev/shm 사용 안함
         driver = new ChromeDriver(options);
+
         try {
-            String crawled = getImgUrl();
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); // 암묵적 대기 시간 설정
+            List<WebElement> crawled = getImgUrl(url);
             int startIndex = crawled.indexOf("http");
+            crawled.forEach(x->
+                System.out.println(x)
+            );
+            // 특정 요소 찾기 및 텍스트 가져오기
+//            imgSrc = "https://img1.kakaocdn.net/cthumb/local/R0x420.q50/?fname=" + crawled.substring(startIndex);
+//            System.out.println("이미지 링크: " + imgSrc);
+//            System.out.println(crawled);
 
-            String imgSrc = "https://img1.kakaocdn.net/cthumb/local/R0x420.q50/?fname="+crawled.substring(startIndex);
-            System.out.println(imgSrc);
-        } catch (InterruptedException e) {
+
+            long endTime = System.currentTimeMillis(); // 종료 시간 기록
+            long totalTime = endTime - startTime; // 총 실행 시간 계산
+
+            System.out.println("실행 시간: " + totalTime + "ms");
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            driver.close();
+            driver.quit();
         }
-        driver.close();	//탭 닫기
-        driver.quit();	//브라우저 닫기
+        return imgSrc;
     }
 
-
-    /**
-     * data가져오기
-     */
-    private String getImgUrl() throws InterruptedException {
+    private List<WebElement> getImgUrl(String url) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(30));
-
-        driver.get(url);    //브라우저에서 url로 이동한다.
-        Thread.sleep(30); //브라우저 로딩될때까지 잠시 기다린다.
-
-        //#mArticle > div.cont_essential > div:nth-child(1) > div.details_present > a > span.bg_present
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#mArticle > div.cont_essential > div:nth-child(1) > div.details_present > a > span.bg_present")));
-        WebElement element = driver.findElement(By.cssSelector("#mArticle > div.cont_essential > div:nth-child(1) > div.details_present > a > span.bg_present"));
-        return element.getAttribute("style");
+        driver.get(url);
+        //#mArticle > div.cont_essential > div:nth-child(1) > div.details_present > a > span
+//        #mArticle > div.cont_essential > div:nth-child(1) > div.place_details > div > div.location_evaluation > a:nth-child(3) > span.color_b
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#mArticle > div.cont_essential > div:nth-child(1) > div.details_present > a > span")));
+        elements.add(element);
+        WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#mArticle > div.cont_essential > div:nth-child(1) > div.place_details > div > div.location_evaluation > a:nth-child(3) > span.color_b")));
+        elements.add(element2);
+        return elements;
     }
-    // //t1.kakaocdn.net/thumb/T800x0.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2F03C55F4734174AE387216CC0E560F793
-    // https://img1.kakaocdn.net/cthumb/local/R0x420.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2F03C55F4734174AE387216CC0E560F793
-
 }

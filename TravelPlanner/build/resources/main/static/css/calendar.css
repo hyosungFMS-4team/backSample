@@ -11,7 +11,7 @@ body {
 }
 .menu {
   height: 100%;
-  width: 30dvh;
+  width: 15dvw;
   background-color: #a9cd9f;
   border-radius: 0;
   font-size: 2dvh;
@@ -19,21 +19,6 @@ body {
 
 .menu-chosen {
   background-color: #c5debf;
-}
-
-.loading2 {
-  position: absolute;
-  top: 35%;
-  left: 30%;
-}
-
-.loading2 > img {
-  height: 8dvh;
-}
-.loadingComment {
-  align-self: center;
-  opacity: 0.6;
-  font-size: 2.5dvh;
 }
 
 #showUser {
@@ -64,7 +49,8 @@ body {
   margin: auto;
   display: flex;
   flex-direction: column;
-  width: 80dvh;
+  width: 80dvw;
+  align-items: center;
 }
 .main > .title {
   align-self: center;
@@ -193,7 +179,6 @@ body {
   color: #f8fbff;
   border-radius: 7px;
   font-weight: 800;
-
   background-color: #e5e5e5;
 }
 
@@ -406,6 +391,10 @@ body {
   }
 }
 
+form{
+  width: 60dvw;
+}
+
 .btn {
   width: 70%;
   height: 60px;
@@ -428,4 +417,19 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.loading2 {
+  position: absolute;
+  top: 35%;
+  left: 30%;
+}
+
+.loading2 > img {
+  height: 8dvh;
+}
+.loadingComment {
+  align-self: center;
+  opacity: 0.6;
+  font-size: 2.5dvh;
 }

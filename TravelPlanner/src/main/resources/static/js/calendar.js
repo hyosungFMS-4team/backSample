@@ -149,7 +149,7 @@ const generateCalendar = (month, year) => {
       const [start, end] = targetDay;
       let date = day.firstChild ? day.firstChild.textContent : '';
       const currentDate = new Date(year, month, date, 9);
-      let startDate = new Date(start);
+      let startDate = new Date(start).setHours(10);
       let endDate = new Date(end);
       //취소하고 앞에날짜 선택하면 큰날짜로 비교
       if (startDate > endDate) {
@@ -158,6 +158,8 @@ const generateCalendar = (month, year) => {
         startDate = endDate;
         endDate = temp;
       }
+      // console.log(currentDate, Date.parse(currentDate), Date.parse(startDate))
+      // console.log(Date.parse(currentDate) > Date.parse(startDate))
       if (currentDate > startDate && currentDate < endDate && day.innerHTML) {
         day.classList.add('between-date');
       }
@@ -256,11 +258,10 @@ function handleDateClick(e) {
     resetBackground(calendarElement);
     return;
   }
-  let date = target.firstChild ? target.firstChild.textContent : '';
-
+  let date = target.firstChild ? target.firstChild.textContent.trim() : '';
   const chosenDate = year + '-' + month.padStart(2, '0') + '-' + date.padStart(2, '0');
   if (
-    Date.parse(currentDate) < Date.parse(chosenDate) &&
+    Date.parse(currentDate) <= Date.parse(chosenDate) &&
     alreadyPickedCount < 2 &&
     !target.classList.contains('picked-date') &&
     target.innerHTML.trim() &&
@@ -271,7 +272,6 @@ function handleDateClick(e) {
     //localstorage
     localStorage.setItem('targetDay', JSON.stringify(targetDay));
     form.value = targetDay;
-    console.log(form);
     // 선택한 날짜를 변경했으므로 배경색 다시 설정
     resetBackground(calendarElement);
   }
@@ -304,7 +304,7 @@ function handleDateClick(e) {
         startDate = endDate;
         endDate = temp;
       }
-      if (currentDate > startDate && currentDate < endDate && day.innerHTML) {
+      if (currentDate > startDate && currentDate < endDate && day.innerHTML && !day.classList.contains("picked-date")) {
         day.classList.add('between-date');
       } else {
         day.classList.remove('between-date');
