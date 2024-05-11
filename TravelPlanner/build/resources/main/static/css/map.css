@@ -187,7 +187,7 @@ body,html {
 #placesList .item {
     position: relative;
     width: 92%;
-    height: 9dvh;
+    height: 10dvh;
     border-bottom: 1px solid #888;
     overflow: hidden;
     cursor: pointer;
@@ -205,12 +205,16 @@ body,html {
 }
 #placesList .item h5,
 #placesList .item .info {
+    width: 90%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
 }
+#placesList .item .info h5 a{
+    font-size: 1.4dvh;
+}
 #placesList .item .info {
-    padding: 10px 0 10px 55px;
+    padding: 10px 4px 10px 55px;
 }
 #placesList .info .gray {
     color: #8a8a8a;
@@ -275,6 +279,7 @@ body,html {
 #placesList .item .marker_15 {
     background-position: 0 -654px;
 }
+
 #pagination {
     margin: 10px auto;
     text-align: center;
@@ -289,7 +294,6 @@ body,html {
     color: #777;
 }
 
-
 .hidden {
     display: none;
 }
@@ -301,4 +305,108 @@ body,html {
     height: 100px;
     background-color: rebeccapurple;
     z-index: 99;
+}
+
+.item{
+    position: relative;
+}
+
+.like{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 2dvh;
+}
+
+
+
+.middle{
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.right img{
+    margin-left: auto;
+    height: 17px;
+    width: 17px;
+}
+
+.middle a{
+    cursor: pointer;
+    color: #2857FF;
+    text-decoration: underline;
+}
+
+.customoverlay{
+    padding: 12px;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    background: rgba(250, 249, 252, 1);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+}
+
+.customoverlay .thumbnail{
+    height: 100px;
+    width: 120px;
+    border-radius: 5px;
+}
+
+.customoverlay .thumbnail img{
+    border-radius: 5px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+.customoverlay .middle .category{
+    color: #6d6d6d;
+    text-overflow:ellipsis;
+}
+
+.customoverlay .middle .place_name{
+    font-size: 18px;
+    font-weight: 500;
+    text-overflow:ellipsis;
+}
+
+.customoverlay .middle .address{
+
+}
+
+.customoverlay .middle .phone{
+
+}
+
+.starswrap{
+
+}
+
+.star_ratings span {
+    display:block;
+    height: 100%;
+    width: 0;
+    position:absolute;
+    top:0;left:0;
+    background:url('../images/star_filled.png') 0 0 no-repeat;
+    pointer-events:none;
+    background-size: 60px;
+}
+
+.star_ratings {
+    display:inline-block;
+    position:relative;
+    height: 12px;
+    width: 60px;
+    background:url('../images/stars.png') 0 0 no-repeat;
+    background-size: 60px;
 }

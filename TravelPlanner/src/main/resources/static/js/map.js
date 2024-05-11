@@ -12,9 +12,8 @@ let map = new kakao.maps.Map(mapContainer, mapOption);
 
 // 장소 검색 객체를 생성합니다
 let ps = new kakao.maps.services.Places();
-
+let overlayList = [];
 // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
 // 키워드로 장소를 검색합니다
 searchPlaces();
@@ -30,7 +29,10 @@ function searchPlaces() {
   }
 
   // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-  ps.keywordSearch(keyword, placesSearchCB);
+  ps.keywordSearch(keyword, placesSearchCB,{
+    size:7,
+  });
+
   return false;
 }
 
@@ -41,7 +43,6 @@ function placesSearchCB(data, status, pagination) {
     // 검색 목록과 마커를 표출합니다
     displayPlaces(data);
     displaySearchResult(data);
-    getImages(data);
     // 페이지 번호를 표출합니다
     displayPagination(pagination);
   } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -60,25 +61,52 @@ function displaySearchResult(data) {
 }
 
 // 검색 결과 목록과 마커를 표출하는 함수입니다
-function displayPlaces(places) {
+async function displayPlaces(places) {
   let listEl = document.getElementById('placesList'),
     menuEl = document.getElementById('search_wrap'),
     fragment = document.createDocumentFragment(),
     bounds = new kakao.maps.LatLngBounds(),
     listStr = '';
-
+    console.log(places)
   // 검색 결과 목록에 추가된 항목들을 제거합니다
   removeAllChildNods(listEl);
 
   // 지도에 표시되고 있는 마커를 제거합니다
   removeMarker();
 
+  if(overlayList[0]){
+    overlayList = [];
+  }
   for (let i = 0; i < places.length; i++) {
     // 마커를 생성하고 지도에 표시합니다
     let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
       marker = addMarker(placePosition, i),
       itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
 
+    let customOverlay = new kakao.maps.CustomOverlay({
+      position: placePosition,
+      content: `<div class="customoverlay">
+                            <div class="thumbnail"><img src=""></div>
+                              <div class="middle">
+                                  <div class="category">${places[i].category_name}</div>
+                                  <div class="place_name" style="font-size: ${places[i].place_name.length>10?"14px":"18px"}">${places[i].place_name}</div>
+                                  <div class="reviews">
+                                    <span class="ratings"></span>
+                                    <span class="starswrap"><span class="star_ratings" id="starRating"><span></span></span></span>
+                                    <span class="reviewCnt"></span>
+                                  </div>
+                                  <div class="address">${places[i].address_name}</div>
+                                  <div class="phone">${places[i].phone}</div>
+                              </div>
+                              <div class="right">
+                                <img src="../images/heart.svg" alt="">
+                              </div>
+                            </div>`,
+
+      yAnchor: 1.34, // 오버레이의 y축 기준점을 설정합니다 (0: 위쪽, 1: 아래쪽)
+      xAnchor: 0.5 // 오버레이의 x축 기준점을 설정합니다 (0: 왼쪽, 1: 오른쪽)
+    });
+    overlayList.push(customOverlay);
     // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
     // LatLngBounds 객체에 좌표를 추가합니다
     bounds.extend(placePosition);
@@ -88,24 +116,33 @@ function displayPlaces(places) {
     // mouseout 했을 때는 인포윈도우를 닫습니다
     (function (marker, title) {
       kakao.maps.event.addListener(marker, 'mouseover', function () {
-        displayInfowindow(marker, title);
+        makeOverListener(map,customOverlay);
+
       });
 
       kakao.maps.event.addListener(marker, 'mouseout', function () {
-        infowindow.close();
+        makeOutListener(customOverlay);
+
       });
 
-      itemEl.onmouseover = function () {
-        displayInfowindow(marker, title);
-      };
+      itemEl.addEventListener("mouseover",(e)=> {
+        // Check if the event target is the element itself
+          //custeroverlay open logic
+          map.setCenter(placePosition);
+          makeOverListener(map,customOverlay);
+      })
 
-      itemEl.onmouseout = function () {
-        infowindow.close();
-      };
+      itemEl.addEventListener("mouseout",(e)=>{// Check if the event target is the element itself
+        if (!itemEl.contains(e.relatedTarget)) {
+          // infowindow close logic
+          makeOutListener(customOverlay);
+        }
+      })
     })(marker, places[i].place_name);
 
     fragment.appendChild(itemEl);
   }
+  getImages(places);
 
   // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
   listEl.appendChild(fragment);
@@ -118,25 +155,29 @@ function displayPlaces(places) {
 // 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
   let el = document.createElement('li'),
-    // itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' + '<div class="info">' + '   <h5>' + places.place_name + '</h5>';
-    itemStr = '<img class="thumbnail">';
+    itemStr = `<span class="markerbg marker_${index + 1}"></span><div class="info"><h5><a href="${places.place_url}">${places.place_name}</a></h5>`;
   if (places.road_address_name) {
-    itemStr += '    <span>' + places.road_address_name + '</span>' + '   <span class="jibun gray">' + places.address_name + '</span>';
+    itemStr += `<span>${places.road_address_name}</span><span class="jibun gray">${places.address_name}</span>`;
   } else {
-    itemStr += '    <span>' + places.address_name + '</span>';
+    itemStr +=`<span>${places.address_name}</span>`;
   }
-
-  // itemStr += '  <span class="tel">' + places.phone + '</span>' + '</div>';
+  itemStr +=`<img src="images/heart.svg" class="like" id="${index+1}">`;
 
   el.innerHTML = itemStr;
   el.className = 'item';
 
   // TODO:
-  el.addEventListener('click', () => {
-    // addTravelPlanItem(places);
-  });
-
   return el;
+}
+
+// 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+function makeOverListener(map, overlay) {
+  overlay.setMap(map);
+}
+
+// 인포윈도우를 닫는 클로저를 만드는 함수입니다
+function makeOutListener(overlay) {
+  overlay.setMap(null);
 }
 
 function createTravelplanItem(places) {
@@ -242,15 +283,6 @@ function displayPagination(pagination) {
   paginationEl.appendChild(fragment);
 }
 
-// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-// 인포윈도우에 장소명을 표시합니다
-function displayInfowindow(marker, title) {
-  let content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-  infowindow.setContent(content);
-  infowindow.open(map, marker);
-}
-
 // 검색결과 목록의 자식 Element를 제거하는 함수입니다
 function removeAllChildNods(el) {
   while (el.hasChildNodes()) {
@@ -259,26 +291,86 @@ function removeAllChildNods(el) {
 }
 
 async function getImages(places) {
+  let placeUrls = [];
     for (const x of places) {
-      const response = await fetch('/crawl', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: x.place_url,
-      }).then(response=>{
-        if (response.ok) {
-          return response.text();
-        } else {
-          throw new Error('Network response was not ok.');
-        }
-      }).then(res=>{
-        const thumbnail = document.querySelectorAll(".thumbnail")
-        // thumbnail[]
-        console.log(res)
-      }).catch(error=>{
-        console.error('There was a problem with the fetch operation:', error);
-      })
+      placeUrls.push({placeUrl : x.place_url});
     }
+  const response = await fetch('/crawl', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(placeUrls),
+  }).then(response=>{
+    if (response.ok) {
+      return response.text();
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  }).then(res=>{
+    const thumbnail = document.querySelectorAll(".thumbnail")
+    const ratings = document.querySelectorAll(".ratings")
+    const crawledResults = JSON.parse(res);
+    console.log(crawledResults)
+    //크롤링 데이터 다 받아온 후 각 커스텀오버레이들에 별점과 썸네일 이미지 추가
+    console.log(overlayList)
+    let starWidth;
 
+    overlayList.forEach((x,idx)=>{
+      switch (true){
+        case crawledResults[idx][1] < 0.5 && crawledResults[idx][1] >= 0 :
+          starWidth = "0%";
+          break
+        case crawledResults[idx][1] <= 1 :
+          starWidth = "9%";
+          break
+        case crawledResults[idx][1] < 1.5 :
+          starWidth = "21%";
+          break
+        case crawledResults[idx][1] <= 2 :
+          starWidth = "29%";
+          break
+        case crawledResults[idx][1] < 2.5 :
+          starWidth = "41%";
+          break
+        case crawledResults[idx][1] <= 3 :
+          starWidth = "49%";
+          break
+        case crawledResults[idx][1] < 3.5 :
+          starWidth = "61%";
+          break
+        case crawledResults[idx][1] <= 4 :
+          starWidth = "70%";
+          break
+        case crawledResults[idx][1] < 4.5 :
+          starWidth = "81%";
+          break
+        case crawledResults[idx][1] <= 5 :
+          starWidth = "90%";
+          break
+      }
+      let content = `<div class="customoverlay">
+                            <div class="thumbnail"><img src="${crawledResults[idx][0]}"></div>
+                              <div class="middle">
+                                  <div class="category">${places[idx].category_name}</div>
+                                  <div class="place_name" style="font-size: ${places[idx].place_name.length>10?"14px":"18px"}">${places[idx].place_name}</div>
+                                  <div class="reviews">
+                                    <span class="ratings">${crawledResults[idx][1]}</span>
+                                    <span class="starswrap"><span class="star_ratings" id="starRating"><span style="width: ${starWidth}"></span></span></span>
+                                    <span class="reviewCnt">${crawledResults[idx][2].replaceAll("(","").replaceAll(")","")}건</span>
+                                  </div>
+                                  <div class="address">${places[idx].address_name}</div>
+                                  <div class="phone">${places[idx].phone}</div>
+                              </div>
+                              <div class="right">
+                                <img src="../images/heart.svg" alt="">
+                              </div>
+                            </div>`
+      x.setContent(content)
+
+    })
+
+  }).catch(error=>{
+    console.error('There was a problem with the fetch operation:', error);
+  })
 }
